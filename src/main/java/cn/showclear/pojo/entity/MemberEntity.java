@@ -1,5 +1,7 @@
 package cn.showclear.pojo.entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -53,6 +55,15 @@ public class MemberEntity {
     private Date modifyTime;
     //记录创建时间
     private Date createTime;
+
+    //添加电话号码 完成自动从电话1填充到电话5(还不够的话就自动忽略)
+    public void addPhoneNumber(String phoneNumber) {
+        if (StringUtils.isNotBlank(this.memTel)) this.memTel = phoneNumber;
+        else if (StringUtils.isNotBlank(this.memTel2)) this.memTel2 = phoneNumber;
+        else if (StringUtils.isNotBlank(this.memTel3)) this.memTel3 = phoneNumber;
+        else if (StringUtils.isNotBlank(this.memTel4)) this.memTel4 = phoneNumber;
+        else if (StringUtils.isNotBlank(this.memTel4)) this.memTel5 = phoneNumber;
+    }
 
     public int getId() {
         return id;

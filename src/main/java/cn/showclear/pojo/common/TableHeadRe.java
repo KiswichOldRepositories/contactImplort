@@ -13,6 +13,7 @@ public class TableHeadRe {
     //储存了表结构 ,这样在遍历表的时候可以根据列数找到列对应的含义
     private Map<Integer,TableHeadEnum> tableHeadMap;
     //用arraylist实现的储存表结构，因为列数是唯一的
+    @Deprecated
     private List<TableHeadEnum> tableHeadList;
     //开始列数
     private Integer startCell;

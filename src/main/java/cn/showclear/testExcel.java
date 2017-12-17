@@ -1,6 +1,8 @@
 package cn.showclear;
 
+import cn.showclear.pojo.common.TableHeadEnum;
 import cn.showclear.pojo.common.TableHeadRe;
+import cn.showclear.pojo.entity.MemberEntity;
 import cn.showclear.util.ReadConfig;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.ss.usermodel.*;
@@ -9,16 +11,13 @@ import cn.showclear.pojo.EntityManager;
 import cn.showclear.util.TableHeadUtil;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 public class testExcel {
 
     @Test
-    public void testExcel() {
+    public void testExcel1() {
         SqlSession session = EntityManager.getSession();
         try {
             FileInputStream fileInputStream = new FileInputStream("E://叙简科技内部通讯录.xlsx");
@@ -181,19 +180,62 @@ public class testExcel {
 
                 //根据每个块，得到相应的部门信息和人员信息。
                 for (TableHeadRe table : tableHeadRes) {
+                    //从数据行开始便利
                     int rowIndex = rowIndexMark;
+                    //储存多级部门的信息
+                    String[] deptLevel = new String[table.getEndCell()-table.getStartCell()];
+
+
                     while (true) {
-                        //遍历列
+                        //遍历行
                         Row row = sheet.getRow(rowIndex++);
                         if (row == null) break;
-                        //遍历该块的每一个单元格
-                        for(int i = table.getStartCell();i<=table.getEndCell();i++){
-                            //
+                        //用来储存人的信息 每一块的单个行只有一个人
+                        MemberEntity member = new MemberEntity();
+                        //用来储存拓展信息
+                        Map<String,String> expMap = new HashMap<>();
 
-                            System.out.println(TableHeadUtil.getText(row.getCell(i)));
+                        //遍历该块的每一个单元格
+                        for (int i = table.getStartCell(); i <= table.getEndCell(); i++) {
+                            //
+                            String cellText = TableHeadUtil.getText(row.getCell(i));
+                            System.out.println(cellText);
+                            //该列对应的属性
+                            switch ( table.getTableHeadMap().get(i)){
+                                case Dept:
+                                    //对部门的操作 判断是第几级部门 储存 /人物对应最下级部门
+                                    //i-table.startCell 即为当前的部门级数
+                                    //有一种情况 前面是3级，后面是1级/2级部门的处理方法！-待定
+                                    //以及人如何确定他是属于哪个部门的
+
+
+                                    break;
+                                case name:
+                                    member.setMemName(cellText);
+                                    break;
+                                case phoneNumber:
+                                    member.addPhoneNumber(cellText);
+                                    break;
+                                case tellphoneNumber:
+                                    member.setMemMobile(cellText);
+                                    break;
+                                case email:
+                                    member.setMemEmail(cellText);
+                                    break;
+                                case fex:
+                                    member.setMemFax(cellText);
+                                    break;
+                                case deptExt:
+                                    //这里怎们拿到key sheet.getRow(rowIndexMark).getCell(i) 可以拿到 不够优雅2333
+
+                                    //expMap.put(,cellText);
+                                    break;
+                            }
 
 
                         }
+                        //遍历结束 储存人物信息和人物的拓展信息
+
                         System.out.println("----------------------------");
 
                     }
@@ -214,7 +256,7 @@ public class testExcel {
     }
 
     @Test
-    public void testDate(){
+    public void testDate() {
         try {
             FileInputStream fileInputStream = new FileInputStream("E://叙简科技内部通讯录.xlsx");
             Workbook sheets = WorkbookFactory.create(fileInputStream);
@@ -225,8 +267,13 @@ public class testExcel {
             System.out.println(TableHeadUtil.getText(cell));
             System.out.println(cell);
             System.out.println(new Date(new Double(cell.getNumericCellValue()).longValue()));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(1);
     }
 }
