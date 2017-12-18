@@ -1,4 +1,4 @@
-package cn.showclear.util;
+package cn.showclear.service;
 
 import cn.showclear.pojo.EntityManager;
 import cn.showclear.pojo.common.TableHeadEnum;
@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 /**
  * 用于对表头操作的一串工具
  */
-public class TableHeadUtil {
+public class TableHeadService {
 
     /**
      * 识别单元格类型，返回其中的值（string）

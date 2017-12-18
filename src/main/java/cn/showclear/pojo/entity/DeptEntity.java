@@ -30,6 +30,27 @@ public class DeptEntity {
     //记录创建时间
     private Date createTime;
 
+    public DeptEntity() {
+    }
+
+    public DeptEntity(int parentId, String deptName) {
+        this.parentId = parentId;
+        this.deptName = deptName;
+    }
+
+    public DeptEntity(int parentId, String deptName, String firstLetter, String orgCode, int sortIndex, String pathName, String syncKey, String deptDesc, String deptExt, byte isActive) {
+        this.parentId = parentId;
+        this.deptName = deptName;
+        this.firstLetter = firstLetter;
+        this.orgCode = orgCode;
+        this.sortIndex = sortIndex;
+        this.pathName = pathName;
+        this.syncKey = syncKey;
+        this.deptDesc = deptDesc;
+        this.deptExt = deptExt;
+        this.isActive = isActive;
+    }
+
     public int getId() {
         return id;
     }
@@ -158,5 +179,24 @@ public class DeptEntity {
     public int hashCode() {
 
         return Objects.hash(id, parentId, deptName, firstLetter, orgCode, sortIndex, pathName, syncKey, deptDesc, deptExt, isActive, modifyTime, createTime);
+    }
+
+    @Override
+    public String toString() {
+        return "DeptEntity{" +
+                "id=" + id +
+                ", parentId=" + parentId +
+                ", deptName='" + deptName + '\'' +
+                ", firstLetter='" + firstLetter + '\'' +
+                ", orgCode='" + orgCode + '\'' +
+                ", sortIndex=" + sortIndex +
+                ", pathName='" + pathName + '\'' +
+                ", syncKey='" + syncKey + '\'' +
+                ", deptDesc='" + deptDesc + '\'' +
+                ", deptExt='" + deptExt + '\'' +
+                ", isActive=" + isActive +
+                ", modifyTime=" + modifyTime +
+                ", createTime=" + createTime +
+                '}';
     }
 }

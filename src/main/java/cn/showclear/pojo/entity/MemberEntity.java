@@ -58,11 +58,11 @@ public class MemberEntity {
 
     //添加电话号码 完成自动从电话1填充到电话5(还不够的话就自动忽略)
     public void addPhoneNumber(String phoneNumber) {
-        if (StringUtils.isNotBlank(this.memTel)) this.memTel = phoneNumber;
-        else if (StringUtils.isNotBlank(this.memTel2)) this.memTel2 = phoneNumber;
-        else if (StringUtils.isNotBlank(this.memTel3)) this.memTel3 = phoneNumber;
-        else if (StringUtils.isNotBlank(this.memTel4)) this.memTel4 = phoneNumber;
-        else if (StringUtils.isNotBlank(this.memTel4)) this.memTel5 = phoneNumber;
+        if (StringUtils.isBlank(this.memTel)) this.memTel = phoneNumber;
+        else if (StringUtils.isBlank(this.memTel2)) this.memTel2 = phoneNumber;
+        else if (StringUtils.isBlank(this.memTel3)) this.memTel3 = phoneNumber;
+        else if (StringUtils.isBlank(this.memTel4)) this.memTel4 = phoneNumber;
+        else if (StringUtils.isBlank(this.memTel4)) this.memTel5 = phoneNumber;
     }
 
     public int getId() {
@@ -302,5 +302,36 @@ public class MemberEntity {
     public int hashCode() {
 
         return Objects.hash(id, deptId, memCode, memName, sex, firstLetter, memTel, memType, memMobile, memTel2, memTel3, memTel4, memTel5, memFax, memEmail, memPicture, memVideo, memGis, orgCode, sortIndex, updateTime, deptExt, isActive, modifyTime, createTime);
+    }
+
+    @Override
+    public String toString() {
+        return "MemberEntity{" +
+                "id=" + id +
+                ", deptId=" + deptId +
+                ", memCode='" + memCode + '\'' +
+                ", memName='" + memName + '\'' +
+                ", sex=" + sex +
+                ", firstLetter='" + firstLetter + '\'' +
+                ", memTel='" + memTel + '\'' +
+                ", memType=" + memType +
+                ", memMobile='" + memMobile + '\'' +
+                ", memTel2='" + memTel2 + '\'' +
+                ", memTel3='" + memTel3 + '\'' +
+                ", memTel4='" + memTel4 + '\'' +
+                ", memTel5='" + memTel5 + '\'' +
+                ", memFax='" + memFax + '\'' +
+                ", memEmail='" + memEmail + '\'' +
+                ", memPicture='" + memPicture + '\'' +
+                ", memVideo='" + memVideo + '\'' +
+                ", memGis='" + memGis + '\'' +
+                ", orgCode='" + orgCode + '\'' +
+                ", sortIndex=" + sortIndex +
+                ", updateTime=" + updateTime +
+                ", deptExt='" + deptExt + '\'' +
+                ", isActive=" + isActive +
+                ", modifyTime=" + modifyTime +
+                ", createTime=" + createTime +
+                '}';
     }
 }

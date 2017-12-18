@@ -1,5 +1,7 @@
 package cn.showclear.util;
 
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -13,7 +15,7 @@ public class StringAnalysisUtil {
      * @param string 例如 "，传真号：57898719。公司总机号：57898699"
      * @return {公司总机号，传真号}例如 {"57898699","57898719"}
      */
-    public String[] getPhoneAndFex(String string) {
+    public static String[] getPhoneAndFex(String string) {
         String[] strings = new String[2];
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(string);
@@ -30,6 +32,20 @@ public class StringAnalysisUtil {
             }
         }
         return strings;
+    }
+
+    /**
+     * 获取中文的拼音首字母
+     * @param name
+     * @return
+     */
+    public static String getFirstLetter(String name){
+        try {
+            return PinyinHelper.getShortPinyin(name);
+        } catch (PinyinException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
