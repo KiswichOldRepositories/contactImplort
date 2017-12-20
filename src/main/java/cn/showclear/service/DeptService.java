@@ -4,9 +4,6 @@ import cn.showclear.mapper.DeptMapper;
 import cn.showclear.pojo.entity.DeptEntity;
 import org.apache.ibatis.session.SqlSession;
 
-/**
- * 和部门逻辑有关的方法
- */
 public class DeptService {
     //获取部门的路径
     public static String getDeptPath(DeptMapper mapper, Integer[] deptLevel, String subPath) throws Exception {

@@ -1,6 +1,6 @@
 package cn.showclear.service;
 
-import cn.showclear.pojo.EntityEnManager;
+import cn.showclear.pojo.EntityManager;
 import cn.showclear.pojo.common.TableHeadEnum;
 import cn.showclear.pojo.common.TableHeadRe;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -10,7 +10,7 @@ import org.apache.poi.util.LocaleUtil;
 import java.text.SimpleDateFormat;
 
 /**
- * 用于对表头操作的业务逻辑
+ * 用于对表头操作的一串工具
  */
 public class TableHeadService {
 
@@ -54,10 +54,10 @@ public class TableHeadService {
      */
     public static boolean add2HeadTable(Cell cell, Integer cellNum, TableHeadRe tableHeadRe) {
         //在map头中写入表头信息
-//        tableHeadRe.getTableHeadMap().put(cellNum, EntityEnManager.tableHeadDictory.get(getText(cell)));
+//        tableHeadRe.getTableHeadMap().put(cellNum, EntityManager.tableHeadDictory.get(getText(cell)));
         switch (cell.getCellTypeEnum()) {
             case STRING:
-                TableHeadEnum headEnum = EntityEnManager.tableHeadDictory.get(cell.getStringCellValue().trim());
+                TableHeadEnum headEnum = EntityManager.tableHeadDictory.get(cell.getStringCellValue().trim());
                 //当传入的集合不为空而且传入了一个部门单元格的时候，即发现了新的部门单元格后
                 if (headEnum == TableHeadEnum.Dept && !tableHeadRe.getTableHeadMap().isEmpty()) return false;
                 tableHeadRe.getTableHeadMap().put(cellNum, headEnum);
@@ -65,7 +65,7 @@ public class TableHeadService {
 
             case NUMERIC://理论上是不会有数字的
                 tableHeadRe.getTableHeadMap()
-                        .put(cellNum, EntityEnManager.tableHeadDictory
+                        .put(cellNum, EntityManager.tableHeadDictory
                                 .get(String.valueOf((long) cell.getNumericCellValue()).trim()));
                 break;
             case BLANK:

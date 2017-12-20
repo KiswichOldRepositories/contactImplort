@@ -1,19 +1,11 @@
 package cn.showclear.constant;
 
-/**
- * 常量
- */
+import java.util.List;
+import java.util.Map;
+
 public interface Constant {
-    Integer DEPT_ACTIVE = 1;
-    Integer DEPT_UNACTIVE = 0;
-    Integer MEMBER_ACTIVE = 1;
-    Integer MENBER_UNACTIVE = 0;
-
-    Integer MEMBER_SEX_MAN = 1;
-    Integer MEMBER_SEX_WOMAN = 2;
-
-    Integer MEMBER_TYPE_NORMAL = 0;
-    Integer MEMBER_TYPE_VIDEO = 1;
-    Integer MEMBER_TYPE_MOBILE = 2;
-
+    byte DEPT_ACTIVE = 1;
+    byte DEPT_UNACTIVE = 0;
+    byte MEMBER_ACTIVE = 1;
+    byte MENBER_UNACTIVE = 0;
 }
