@@ -12,16 +12,12 @@ import java.util.Map;
 public class TableHeadRe {
     //储存了表结构 ,这样在遍历表的时候可以根据列数找到列对应的含义
     private Map<Integer,TableHeadEnum> tableHeadMap;
-    //用arraylist实现的储存表结构，因为列数是唯一的
-    @Deprecated
-    private List<TableHeadEnum> tableHeadList;
     //开始列数
     private Integer startCell;
     //结束列数
     private Integer endCell;
 
     public TableHeadRe() {
-        this.tableHeadList = new ArrayList<>();
         this.tableHeadMap = new HashMap<>();
     }
 
@@ -32,15 +28,6 @@ public class TableHeadRe {
     public void setTableHeadMap(Map<Integer, TableHeadEnum> tableHeadMap) {
         this.tableHeadMap = tableHeadMap;
     }
-
-    public List<TableHeadEnum> getTableHeadList() {
-        return tableHeadList;
-    }
-
-    public void setTableHeadList(List<TableHeadEnum> tableHeadList) {
-        this.tableHeadList = tableHeadList;
-    }
-
 
     public Integer getStartCell() {
         return startCell;

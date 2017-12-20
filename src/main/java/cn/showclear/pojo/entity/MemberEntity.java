@@ -5,6 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * 员工实体类
+ */
 public class MemberEntity {
     private int id;
     //部门ID
@@ -14,13 +17,13 @@ public class MemberEntity {
     //成员姓名
     private String memName;
     //性别，1:男； 2:女
-    private byte sex;
+    private Integer sex;
     //姓名拼音首字母
     private String firstLetter;
     //成员号码
     private String memTel;
     //成员类型:0-一般用户；1-视频话机用户；2-移动终端用户；
-    private byte memType;
+    private Integer memType;
     //手机号码
     private String memMobile;
     //号码二
@@ -50,7 +53,7 @@ public class MemberEntity {
     //扩展字段,建议使用json格式
     private String deptExt;
     //是否激活：0-否；1-是
-    private byte isActive;
+    private Integer isActive;
     //记录修改时间
     private Date modifyTime;
     //记录创建时间
@@ -97,11 +100,11 @@ public class MemberEntity {
         this.memName = memName;
     }
 
-    public byte getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(byte sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -121,11 +124,11 @@ public class MemberEntity {
         this.memTel = memTel;
     }
 
-    public byte getMemType() {
+    public Integer getMemType() {
         return memType;
     }
 
-    public void setMemType(byte memType) {
+    public void setMemType(Integer memType) {
         this.memType = memType;
     }
 
@@ -242,11 +245,11 @@ public class MemberEntity {
         this.deptExt = deptExt;
     }
 
-    public byte getIsActive() {
+    public Integer getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(byte isActive) {
+    public void setIsActive(Integer isActive) {
         this.isActive = isActive;
     }
 

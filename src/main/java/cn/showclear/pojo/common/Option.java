@@ -6,4 +6,6 @@ package cn.showclear.pojo.common;
 public enum Option {
     help,//帮助 显示各种命令
     save,//将excel的数据存入数据库
+    error,//错误
+
 }

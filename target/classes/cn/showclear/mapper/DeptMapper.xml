@@ -47,16 +47,16 @@
     </select>
 
     <insert id="insertIfNameAndParentId" parameterType="cn.showclear.pojo.entity.DeptEntity" keyProperty="id" useGeneratedKeys="true">
-        <selectKey keyProperty="id" resultType="int" order="BEFORE">
-            SELECT count(id) FROM T_ORG_DEPT WHERE parent_id=#{parentId} AND dept_name=#{deptName}
+        <selectKey keyProperty="sortIndex" resultType="int" order="BEFORE">
+            SELECT count(sort_index) FROM T_ORG_DEPT WHERE parent_id=#{parentId} AND dept_name=#{deptName}
         </selectKey>
-        <if test="id == 0">
+        <if test="sortIndex == 0">
             INSERT ignore INTO T_ORG_DEPT
             (parent_id,dept_name,first_letter,org_code,sort_index,path_name,sync_key,dept_desc,dept_ext,is_active,modify_time,create_time)
             VALUES (
             #{parentId},#{deptName},#{firstLetter},#{orgCode},#{sortIndex},#{pathName},#{syncKey},#{deptDesc},#{deptExt},#{isActive},#{modifyTime},#{createTime})
         </if>
-        <if test="id>0">
+        <if test="sortIndex>0">
             SELECT id FROM T_ORG_DEPT WHERE parent_id=#{parentId} AND dept_name=#{deptName}
            <!--UPDATE T_ORG_DEPT-->
             <!--<set>-->

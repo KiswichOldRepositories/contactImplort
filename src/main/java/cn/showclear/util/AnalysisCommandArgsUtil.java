@@ -2,6 +2,9 @@ package cn.showclear.util;
 
 import cn.showclear.pojo.common.ApplicationInfomation;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 public class AnalysisCommandArgsUtil {
 
     /**
@@ -36,7 +39,7 @@ public class AnalysisCommandArgsUtil {
             }
 
         }
-        if(checkNull(infomation)) return infomation;
+        if (checkNull(infomation)) return infomation;
         else return null;
     }
 
@@ -47,8 +50,17 @@ public class AnalysisCommandArgsUtil {
      * @return
      */
     public static ApplicationInfomation AnalByMethod2(String... args) {
+        ApplicationInfomation infomation = new ApplicationInfomation();
 
-        return null;
+        if (args.length >= 5) {
+            infomation.setDatabaseIp(args[0]);
+            infomation.setDatabasePort(Integer.parseInt(args[1]));
+            infomation.setDatabaseUsername(args[2]);
+            infomation.setDatabasePassword(args[3]);
+            infomation.setExcelLocalPath(args[4]);
+            //后面的参数就忽略掉了
+            return infomation;
+        } else return null;
     }
 
     /**
@@ -61,17 +73,69 @@ public class AnalysisCommandArgsUtil {
      * @param args
      * @return
      */
-    public static ApplicationInfomation AnalByMethod3(String... args) {
+    public static ApplicationInfomation[] AnalByMethod3(String... args) {
+        try {
+            ApplicationInfomation[] infomations = new ApplicationInfomation[6];
+            ArrayList<Integer> integers = new ArrayList<>();//存储参数的位置
+            for (int i = 0; i < 5; i++) integers.add(i);
+
+            for (int i = 0, infomationsLength = infomations.length; i < infomationsLength; i++) {
+                infomations[i] = new ApplicationInfomation();
+            }
+
+            for (int i = 0; i < args.length; i++) {
+                String str = args[i];
+                if (str.split(".").length == 4 || str.equals("localhost")) {
+                    for (ApplicationInfomation infomation : infomations) infomation.setDatabaseIp(str);
+                    integers.remove(new Integer(i));
+                    break;
+                }
+            }
+
+
+            for (int i = 0; i < args.length; i++) {
+                String str = args[i];
+                if (str.split("\\\\").length >= 2 || str.split("//").length >= 2) {
+                    for (ApplicationInfomation infomation : infomations) infomation.setExcelLocalPath(str);
+                    integers.remove(new Integer(i));
+                    break;
+                }
+            }
+
+            //排序 将integers剩下的三个参数进行排序 将结果存入arrayss
+            //就是先将0,1,2进行排列
+            //。。直接写出来效率更高
+            Integer[][] arrays = {{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 1, 0}, {2, 0, 1}};
+
+            //填充
+
+                for (int i = 0; i < infomations.length; i++) {
+                    try {
+                        infomations[i].setDatabasePort(Integer.parseInt(args[integers.get(arrays[i][0])]));
+                        infomations[i].setDatabaseUsername(args[integers.get(arrays[i][1])]);
+                        infomations[i].setDatabasePassword(args[integers.get(arrays[i][2])]);
+                    } catch (Exception ignored) {
+                        //试着加入，失败则清空
+                        infomations[i] = null;
+                    }
+                }
+
+            return infomations;
+
+        } catch (Exception e) {
+
+        }
 
         return null;
     }
 
     /**
      * 测参数是否全部填充
+     *
      * @param infomation
      * @return
      */
-    public static boolean checkNull(ApplicationInfomation infomation){
+    public static boolean checkNull(ApplicationInfomation infomation) {
         return infomation.getDatabaseIp() != null && infomation.getDatabasePassword() != null && infomation.getDatabasePort() != null
                 && infomation.getDatabaseUsername() != null && infomation.getExcelLocalPath() != null;
     }

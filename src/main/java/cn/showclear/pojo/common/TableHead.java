@@ -7,6 +7,7 @@ import java.util.List;
  * 单个分块表中应该具有的元素,及其所在的列数（这样储存索引的时候会很花时间）
  * 用另一种储存方式
  */
+@Deprecated
 public class TableHead {
     //部门所在的列数
     private List<Integer> Dept;
