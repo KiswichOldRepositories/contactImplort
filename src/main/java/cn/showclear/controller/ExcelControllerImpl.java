@@ -102,7 +102,11 @@ public class ExcelControllerImpl implements IController {
                                         String path = null;
                                         DeptEntity deptEntity = new DeptEntity();
                                         deptEntity.setDeptName(cellText);
-
+                                        
+                                        for(int i1 = level;i1<deptLevel.length();i1++){
+                                            deptLevel[i1] = null;
+                                        }
+                                        
                                         if (level == 0) {
                                             //deptLevel.clear();//第0级出现时，清空等级记录
                                             deptLevel = new Integer[table.getEndCell() - table.getStartCell()];
