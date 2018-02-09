@@ -31,7 +31,7 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
-    <insert id="insertByMenber" keyProperty="id" parameterType="cn.showclear.pojo.entity.MemberEntity">
+    <insert id="insertByMember" keyProperty="id" parameterType="cn.showclear.pojo.entity.MemberEntity">
 
 
         <selectKey keyProperty="id" resultType="int" order="BEFORE">

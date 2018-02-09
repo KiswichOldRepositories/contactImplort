@@ -3,6 +3,9 @@ package cn.showclear.pojo.entity;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * 部门实体类
+ */
 public class DeptEntity {
     private int id;
     //上级部门ID
@@ -24,7 +27,7 @@ public class DeptEntity {
     //扩展字段,建议使用json格式
     private String deptExt;
     //是否激活：0-否;1-是
-    private byte isActive;
+    private Integer isActive;
     //记录修改时间
     private Date modifyTime;
     //记录创建时间
@@ -38,7 +41,17 @@ public class DeptEntity {
         this.deptName = deptName;
     }
 
-    public DeptEntity(int parentId, String deptName, String firstLetter, String orgCode, int sortIndex, String pathName, String syncKey, String deptDesc, String deptExt, byte isActive) {
+    public DeptEntity(int parentId, String deptName, String firstLetter, int sortIndex, String pathName, String deptExt, Integer isActive) {
+        this.parentId = parentId;
+        this.deptName = deptName;
+        this.firstLetter = firstLetter;
+        this.sortIndex = sortIndex;
+        this.pathName = pathName;
+        this.deptExt = deptExt;
+        this.isActive = isActive;
+    }
+
+    public DeptEntity(int parentId, String deptName, String firstLetter, String orgCode, int sortIndex, String pathName, String syncKey, String deptDesc, String deptExt, Integer isActive) {
         this.parentId = parentId;
         this.deptName = deptName;
         this.firstLetter = firstLetter;
@@ -131,11 +144,11 @@ public class DeptEntity {
         this.deptExt = deptExt;
     }
 
-    public byte getIsActive() {
+    public Integer getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(byte isActive) {
+    public void setIsActive(Integer isActive) {
         this.isActive = isActive;
     }
 

@@ -1,16 +1,17 @@
 package cn.showclear.service;
 
-import cn.showclear.pojo.EntityManager;
+import cn.showclear.pojo.EntityEnManager;
 import cn.showclear.pojo.common.TableHeadEnum;
 import cn.showclear.pojo.common.TableHeadRe;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.util.LocaleUtil;
 
 import java.text.SimpleDateFormat;
 
 /**
- * 用于对表头操作的一串工具
+ * 用于对表头操作的业务逻辑
  */
 public class TableHeadService {
 
@@ -34,8 +35,8 @@ public class TableHeadService {
                 if (HSSFDateUtil.isCellDateFormatted(cell)) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", LocaleUtil.getUserLocale());
                     sdf.setTimeZone(LocaleUtil.getUserTimeZone());
-                    text= sdf.format(cell.getDateCellValue());
-                }else {//就是一个数字格式的单元格
+                    text = sdf.format(cell.getDateCellValue());
+                } else {//就是一个数字格式的单元格
                     text = String.valueOf((long) cell.getNumericCellValue()).trim();
                 }
                 break;
@@ -54,10 +55,10 @@ public class TableHeadService {
      */
     public static boolean add2HeadTable(Cell cell, Integer cellNum, TableHeadRe tableHeadRe) {
         //在map头中写入表头信息
-//        tableHeadRe.getTableHeadMap().put(cellNum, EntityManager.tableHeadDictory.get(getText(cell)));
+//        tableHeadRe.getTableHeadMap().put(cellNum, EntityEnManager.tableHeadDictory.get(getText(cell)));
         switch (cell.getCellTypeEnum()) {
             case STRING:
-                TableHeadEnum headEnum = EntityManager.tableHeadDictory.get(cell.getStringCellValue().trim());
+                TableHeadEnum headEnum = EntityEnManager.tableHeadDictory.get(cell.getStringCellValue().trim());
                 //当传入的集合不为空而且传入了一个部门单元格的时候，即发现了新的部门单元格后
                 if (headEnum == TableHeadEnum.Dept && !tableHeadRe.getTableHeadMap().isEmpty()) return false;
                 tableHeadRe.getTableHeadMap().put(cellNum, headEnum);
@@ -65,7 +66,7 @@ public class TableHeadService {
 
             case NUMERIC://理论上是不会有数字的
                 tableHeadRe.getTableHeadMap()
-                        .put(cellNum, EntityManager.tableHeadDictory
+                        .put(cellNum, EntityEnManager.tableHeadDictory
                                 .get(String.valueOf((long) cell.getNumericCellValue()).trim()));
                 break;
             case BLANK:
@@ -75,6 +76,25 @@ public class TableHeadService {
                 break;
         }
         return true;
+    }
+
+    /**
+     * 遍历得到表头所在的行数
+     *
+     * @param sheet
+     * @return
+     */
+    public static Integer getHeadRow(Sheet sheet) {
+        Integer rowIndexMark = 0;
+        while (rowIndexMark <= 10) {
+            Cell cell = sheet.getRow(rowIndexMark++).getCell(0);
+            if (cell == null) break;
+
+            if (EntityEnManager.tableHeadDictory.get(TableHeadService.getText(cell)) == TableHeadEnum.Dept) {
+               break;
+            }
+        }
+        return rowIndexMark;
     }
 
 
