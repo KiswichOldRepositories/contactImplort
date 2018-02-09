@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/contactimportmybatis.iml" filepath="$PROJECT_DIR$/contactimportmybatis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/contact-import-spring.iml" filepath="$PROJECT_DIR$/contact-import-spring.iml" />
     </modules>
   </component>
 </project>

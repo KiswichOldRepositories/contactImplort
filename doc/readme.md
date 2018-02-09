@@ -9,13 +9,8 @@
     在使用程序前，先选中最左边的空列，然后ctrl + shift + →，即可选中右边所有的空列，右键删除列。
 选中下方最上面的空行，ctrl + shift + ↓，即可选中下边所有的空列，右键删除。
 
-2.调用jar包的参数有三种形式。
+2.调用jar包的参数有形式。[端口默认为3306，账号密码默认为showclear，符合默认条件的可以省去]
 
-    一、-d+数据库连接 -o+数据库端口 -u数据库账号 -p数据库密码 -l通讯录文件位置
-        eg: java -jar contactImport.jar -dlocalhost -o3306 -uroot -proot -lE://myexcel.xslx
+   -d+数据库连接 -o+数据库端口 -u数据库账号 -p数据库密码 -l通讯录文件位置
+   eg: java -jar contactImport.jar -dlocalhost -o3306 -ushowclear -pclear -lE://myexcel.xslx
         
-    二、按顺序写入 数据库连接 数据库端口 数据库账号 数据库密码 通讯录文件位置
-        eg: java -jar contactImport.jar localhost 3306 root root E://myexcel.xslx
-        
-    三（测试）、随意写入 数据库连接 数据库端口 数据库账号 数据库密码 通讯录文件位置(顺序随意，但在极为特殊的情况下可能出错)
-        eg: java -jar localhost E://myexcel.xslx 3306 root root contactImport.jar
