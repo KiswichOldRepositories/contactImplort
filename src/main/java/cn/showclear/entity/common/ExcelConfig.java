@@ -4,6 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 本程序相关的配置的相关信息
+ * 由于在spring初始化前读取的参数配置，因此将其存放
+ * 在{@link cn.showclear.init.InitBean}中，而不是作为一个bean
+ *
+ *
  */
 public class ExcelConfig {
 
@@ -73,5 +77,17 @@ public class ExcelConfig {
     //检查空值 true为空
     public boolean checkNone() {
         return StringUtils.isBlank(this.url) || StringUtils.isBlank(this.fileLocation);
+    }
+
+
+    @Override
+    public String toString() {
+        return "ExcelConfig{" +
+                "url='" + url + '\'' +
+                ", user='" + user + '\'' +
+                ", password='" + password + '\'' +
+                ", port='" + port + '\'' +
+                ", fileLocation='" + fileLocation + '\'' +
+                '}';
     }
 }

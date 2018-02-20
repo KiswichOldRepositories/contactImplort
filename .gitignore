@@ -3,3 +3,4 @@
 *.iml
 target
 src/test/resources/config.json
+out

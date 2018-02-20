@@ -1,10 +1,12 @@
 package cn.showclear.entity.base;
 
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -23,8 +25,8 @@ public class OrgDeptEntity {
     private String deptDesc;
     private String deptExt;
     private byte isActive;
-    private Timestamp modifyTime;
-    private Timestamp createTime;
+    private Date modifyTime;
+    private Date createTime;
 
     @Id
     @Column(name = "id")
@@ -54,6 +56,11 @@ public class OrgDeptEntity {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+        try {
+            this.firstLetter = PinyinHelper.getShortPinyin(deptName);
+        } catch (PinyinException e) {
+            e.printStackTrace();
+        }
     }
 
     @Basic
@@ -138,21 +145,21 @@ public class OrgDeptEntity {
 
     @Basic
     @Column(name = "modify_time")
-    public Timestamp getModifyTime() {
+    public Date getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Timestamp modifyTime) {
+    public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
 
     @Basic
     @Column(name = "create_time")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
