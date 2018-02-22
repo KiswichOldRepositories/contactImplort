@@ -1,10 +1,11 @@
 package cn.showclear;
 
 
-
+import cn.showclear.entity.base.OrgDeptEntity;
 import cn.showclear.entity.common.OptionEnum;
 import cn.showclear.exception.ArgsMissException;
 import cn.showclear.init.*;
+import cn.showclear.repository.DeptRepository;
 import cn.showclear.repository.MemberRepository;
 
 
@@ -18,9 +19,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -51,7 +56,7 @@ public class ExcelApplication implements CommandLineRunner {
                 return;
             }
 
-            switch (InitBean.getInstance().getOptionEnum()){
+            switch (InitBean.getInstance().getOptionEnum()) {
                 case help:
                     new HelpServiceImpl().helpImfo();
                     break;
@@ -90,6 +95,10 @@ public class ExcelApplication implements CommandLineRunner {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    DeptRepository deptRepository;
+
     /**
      * Callback used to run the bean.
      *
@@ -97,6 +106,7 @@ public class ExcelApplication implements CommandLineRunner {
      * @throws Exception on error
      */
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         //这里开始写主要的逻辑
         System.out.println("spring环境配置完毕");
@@ -104,9 +114,22 @@ public class ExcelApplication implements CommandLineRunner {
         System.out.println(initBean);
         System.out.println(InitBean.getInstance());
         System.out.println(configProperties.toString());
+        Date date = new Date();
+        OrgDeptEntity one = deptRepository.findOne(1534);
+        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
+        OrgDeptEntity next = one.getChildDept().iterator().next();
+        next.setDeptName("叙简");
+        deptRepository.save(one);
 
+        OrgDeptEntity orgDeptEntity = new OrgDeptEntity();
+        orgDeptEntity.setDeptName("测试");
+        orgDeptEntity.setId(1535);
+        deptRepository.setByDept(orgDeptEntity);
+
+        System.out.println(Arrays.toString(one.getChildDept().toArray()));
 
         System.out.println(initBean.getFile().getAbsolutePath());
+
 
     }
 }

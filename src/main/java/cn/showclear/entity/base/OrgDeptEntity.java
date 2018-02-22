@@ -4,10 +4,13 @@ import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "T_ORG_DEPT", schema = "DB_SC_CORE", catalog = "")
@@ -15,7 +18,7 @@ import java.util.Objects;
 @DynamicUpdate
 public class OrgDeptEntity {
     private int id;
-    private int parentId;
+//    private int parentId;
     private String deptName;
     private String firstLetter;
     private String orgCode;
@@ -28,6 +31,11 @@ public class OrgDeptEntity {
     private Date modifyTime;
     private Date createTime;
 
+    private Set<OrgDeptEntity> childDept;
+    private OrgDeptEntity parentDept;
+
+    private Set<OrgMemberEntity> childMember;
+
     @Id
     @Column(name = "id")
     public int getId() {
@@ -38,15 +46,15 @@ public class OrgDeptEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "parent_id")
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
+//    @Basic
+//    @Column(name = "parent_id")
+//    public int getParentId() {
+//        return parentId;
+//    }
+//
+//    public void setParentId(int parentId) {
+//        this.parentId = parentId;
+//    }
 
     @Basic
     @Column(name = "dept_name")
@@ -163,13 +171,44 @@ public class OrgDeptEntity {
         this.createTime = createTime;
     }
 
+    @OneToMany(mappedBy = "parentDept",fetch = FetchType.EAGER)
+    public Set<OrgDeptEntity> getChildDept() {
+        return childDept;
+    }
+
+    public void setChildDept(Set<OrgDeptEntity> childDept) {
+        this.childDept = childDept;
+    }
+
+    @ManyToOne()
+    @JoinColumn(name = "parent_id")
+    @NotFound(action= NotFoundAction.IGNORE)
+    @org.hibernate.annotations.ForeignKey(name="none")
+    public OrgDeptEntity getParentDept() {
+        return parentDept;
+    }
+
+
+    public void setParentDept(OrgDeptEntity parentDept) {
+        this.parentDept = parentDept;
+    }
+
+    @OneToMany(mappedBy = "parentDept",fetch = FetchType.EAGER)
+    public Set<OrgMemberEntity> getChildMember() {
+        return childMember;
+    }
+
+    public void setChildMember(Set<OrgMemberEntity> childMember) {
+        this.childMember = childMember;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrgDeptEntity that = (OrgDeptEntity) o;
         return id == that.id &&
-                parentId == that.parentId &&
+//                parentId == that.parentId &&
                 sortIndex == that.sortIndex &&
                 isActive == that.isActive &&
                 Objects.equals(deptName, that.deptName) &&
@@ -183,9 +222,5 @@ public class OrgDeptEntity {
                 Objects.equals(createTime, that.createTime);
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(id, parentId, deptName, firstLetter, orgCode, sortIndex, pathName, syncKey, deptDesc, deptExt, isActive, modifyTime, createTime);
-    }
 }

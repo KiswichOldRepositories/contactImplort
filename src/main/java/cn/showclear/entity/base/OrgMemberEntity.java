@@ -2,6 +2,8 @@ package cn.showclear.entity.base;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +15,7 @@ import java.util.Objects;
 @DynamicUpdate
 public class OrgMemberEntity {
     private int id;
-    private int deptId;
+//    private int deptId;
     private String memCode;
     private String memName;
     private byte sex;
@@ -38,6 +40,8 @@ public class OrgMemberEntity {
     private Date modifyTime;
     private Date createTime;
 
+    private OrgDeptEntity parentDept;
+
     @Id
     @Column(name = "id")
     public int getId() {
@@ -48,15 +52,15 @@ public class OrgMemberEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "dept_id")
-    public int getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(int deptId) {
-        this.deptId = deptId;
-    }
+//    @Basic
+//    @Column(name = "dept_id")
+//    public int getDeptId() {
+//        return deptId;
+//    }
+//
+//    public void setDeptId(int deptId) {
+//        this.deptId = deptId;
+//    }
 
     @Basic
     @Column(name = "mem_code")
@@ -288,13 +292,26 @@ public class OrgMemberEntity {
         this.createTime = createTime;
     }
 
+    @ManyToOne
+    @JoinColumn(name="dept_id")
+    @NotFound(action= NotFoundAction.IGNORE)
+    @org.hibernate.annotations.ForeignKey(name="none")
+    public OrgDeptEntity getParentDept() {
+        return parentDept;
+    }
+
+
+    public void setParentDept(OrgDeptEntity parentDept) {
+        this.parentDept = parentDept;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrgMemberEntity that = (OrgMemberEntity) o;
         return id == that.id &&
-                deptId == that.deptId &&
+//                deptId == that.deptId &&
                 sex == that.sex &&
                 memType == that.memType &&
                 updateTime == that.updateTime &&
@@ -320,9 +337,4 @@ public class OrgMemberEntity {
                 Objects.equals(createTime, that.createTime);
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, deptId, memCode, memName, sex, firstLetter, memTel, memType, memMobile, memTel2, memTel3, memTel4, memTel5, memFax, memEmail, memPicture, memVideo, memGis, orgCode, sortIndex, updateTime, deptExt, isActive, modifyTime, createTime);
-    }
 }
