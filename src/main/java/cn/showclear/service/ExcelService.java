@@ -1,9 +1,8 @@
 package cn.showclear.service;
 
-import cn.showclear.entity.common.excel.Excel;
+import cn.showclear.entity.base.OrgDeptEntity;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -19,12 +18,12 @@ public interface ExcelService {
      * @param excelPath
      * @return
      */
-    public Excel getExcel(String excelPath) throws IOException, InvalidFormatException;
+    public OrgDeptEntity getExcel(String excelPath) throws IOException, InvalidFormatException;
 
     /**
      *
      * 将一个excel实体存到数据库里
      * @param excel
      */
-    public void saveExcel(Excel excel);
+    public void saveExcel(OrgDeptEntity excel);
 }

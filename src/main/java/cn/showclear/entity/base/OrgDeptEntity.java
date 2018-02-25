@@ -36,6 +36,15 @@ public class OrgDeptEntity {
 
     private Set<OrgMemberEntity> childMember;
 
+    public OrgDeptEntity() {
+    }
+
+    public OrgDeptEntity(String deptName, int sortIndex, String pathName) {
+        this.deptName = deptName;
+        this.sortIndex = sortIndex;
+        this.pathName = pathName;
+    }
+
     @Id
     @Column(name = "id")
     public int getId() {

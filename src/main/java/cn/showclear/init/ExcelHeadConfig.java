@@ -5,87 +5,88 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 储存配置在application.properties中的配置项
  */
-@ConfigurationProperties(prefix = "excel")
+@ConfigurationProperties(prefix = "excelsplit")
 @Component
 public class ExcelHeadConfig {
-    private String[] dept;
-    private String[] name;
-    private String[] phoneNumber;
-    private String[] tellphoneNumber;
-    private String[] email;
-    private String[] fex;
-    private String[] ext;
+    private List<String> dept;
+    private List<String> name;
+    private List<String> phoneNumber;
+    private List<String> tellphoneNumber;
+    private List<String> email;
+    private List<String> fex;
+    private List<String> ext;
 
-    public String[] getDept() {
+    public List<String> getDept() {
         return dept;
     }
 
     public void setDept(String dept) {
-        this.dept = dept.split(";");
+        this.dept = Arrays.asList(dept.split(";"));
     }
 
-    public String[] getName() {
+    public List<String> getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name.split(";");
+        this.name = Arrays.asList(name.split(";"));
     }
 
-    public String[] getPhoneNumber() {
+    public List<String> getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber.split(";");
+        this.phoneNumber = Arrays.asList(phoneNumber.split(";"));
     }
 
-    public String[] getTellphoneNumber() {
+    public List<String> getTellphoneNumber() {
         return tellphoneNumber;
     }
 
     public void setTellphoneNumber(String tellphoneNumber) {
-        this.tellphoneNumber = tellphoneNumber.split(";");
+        this.tellphoneNumber = Arrays.asList(tellphoneNumber.split(";"));
     }
 
-    public String[] getEmail() {
+    public List<String> getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
-        this.email = email.split(";");
+        this.email = Arrays.asList(email.split(";"));
     }
 
-    public String[] getFex() {
+    public List<String> getFex() {
         return fex;
     }
 
     public void setFex(String fex) {
-        this.fex = fex.split(";");
+        this.fex = Arrays.asList(fex.split(";"));
     }
 
-    public String[] getExt() {
+    public List<String> getExt() {
         return ext;
     }
 
     public void setExt(String ext) {
-        this.ext = ext.split(";");
+        this.ext = Arrays.asList(ext.split(";"));
     }
 
     @Override
     public String toString() {
         return "ExcelHeadConfigProperties{" +
-                "dept=" + Arrays.toString(dept) +
-                ", name=" + Arrays.toString(name) +
-                ", phoneNumber=" + Arrays.toString(phoneNumber) +
-                ", tellphoneNumber=" + Arrays.toString(tellphoneNumber) +
-                ", email=" + Arrays.toString(email) +
-                ", fex=" + Arrays.toString(fex) +
-                ", ext=" + Arrays.toString(ext) +
+                "dept=" + Arrays.toString(dept.toArray()) +
+                ", name=" + Arrays.toString(name.toArray()) +
+                ", phoneNumber=" + Arrays.toString(phoneNumber.toArray()) +
+                ", tellphoneNumber=" + Arrays.toString(tellphoneNumber.toArray()) +
+                ", email=" + Arrays.toString(email.toArray()) +
+                ", fex=" + Arrays.toString(fex.toArray()) +
+                ", ext=" + Arrays.toString(ext.toArray()) +
                 '}';
     }
 }

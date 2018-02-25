@@ -5,3 +5,6 @@ You can customize the EntityInformation abstraction used in the SimpleJpaReposit
  getEntityInformation(…) method accordingly. You then have to register the custom 
  implementation of JpaRepositoryFactory as a Spring bean. 
  Note that this should be rarely necessary. See the JavaDoc for details.
+ 
+ ---
+ jpa实现 insert or update好像比较麻烦 ，这里就find后自己判断下得了

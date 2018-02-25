@@ -9,7 +9,9 @@ import cn.showclear.repository.DeptRepository;
 import cn.showclear.repository.MemberRepository;
 
 
+import cn.showclear.repository.specification.SpecificationMethod;
 import cn.showclear.service.impl.HelpServiceImpl;
+import cn.showclear.service.ReadConfig;
 import cn.showclear.service.impl.TemplateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,9 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -99,6 +100,9 @@ public class ExcelApplication implements CommandLineRunner {
     @Autowired
     DeptRepository deptRepository;
 
+    @Autowired
+    SpecificationMethod specificationMethod;
+
     /**
      * Callback used to run the bean.
      *
@@ -115,21 +119,27 @@ public class ExcelApplication implements CommandLineRunner {
         System.out.println(InitBean.getInstance());
         System.out.println(configProperties.toString());
         Date date = new Date();
-        OrgDeptEntity one = deptRepository.findOne(1534);
-        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
-        OrgDeptEntity next = one.getChildDept().iterator().next();
-        next.setDeptName("叙简");
-        deptRepository.save(one);
 
-        OrgDeptEntity orgDeptEntity = new OrgDeptEntity();
-        orgDeptEntity.setDeptName("测试");
-        orgDeptEntity.setId(1535);
-        deptRepository.setByDept(orgDeptEntity);
+//        OrgDeptEntity next = one.getChildDept().iterator().next();
+//        next.setDeptName("叙简");
+//        deptRepository.save(one);
+//
+//        OrgDeptEntity orgDeptEntity = new OrgDeptEntity();
+//        orgDeptEntity.setDeptName("测试");
+//        orgDeptEntity.setId(1535);
+//        deptRepository.setByDept(orgDeptEntity);
+//
+//        System.out.println(Arrays.toString(one.getChildDept().toArray()));
 
-        System.out.println(Arrays.toString(one.getChildDept().toArray()));
-
+        List all = deptRepository.findAll(specificationMethod.searchCustom("叙简"));
         System.out.println(initBean.getFile().getAbsolutePath());
 
+        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
+        OrgDeptEntity one = deptRepository.findOne(1534);
+        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
+
+        List all3 = deptRepository.findAll(specificationMethod.searchCustom("叙简"));
+        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
 
     }
 }

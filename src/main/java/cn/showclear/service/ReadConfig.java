@@ -1,8 +1,9 @@
-package cn.showclear.init;
+package cn.showclear.service;
 
 import cn.showclear.entity.common.ExcelConfig;
 import cn.showclear.entity.common.OptionEnum;
 import cn.showclear.exception.ArgsMissException;
+import cn.showclear.init.InitBean;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 
 /**
  * 读取命令行参数，转化成特定的参数
+ * 此时还未初始化spring容器，因此不是作为一个bean存在的
  */
 public class ReadConfig {
     public static InitBean initBean = InitBean.getInstance();

@@ -21,13 +21,13 @@ public class TemplateServiceImpl {
                 file.createNewFile();
                 FileWriter fileWriter = new FileWriter(file);
                 fileWriter.append("# 关于表头的配置项\n" +
-                        "excel.dept= ;部门\n" +
-                        "excel.name=姓名\n" +
-                        "excel.phoneNumber=分机号;固话;内线\n" +
-                        "excel.tellphoneNumber=手机\n" +
-                        "excel.email=E-mail;邮箱\n" +
-                        "excel.fex=传真\n" +
-                        "excel.ext=生日;职务");
+                        "excelsplit.dept= ;部门\n" +
+                        "excelsplit.name=姓名\n" +
+                        "excelsplit.phoneNumber=分机号;固话;内线\n" +
+                        "excelsplit.tellphoneNumber=手机\n" +
+                        "excelsplit.email=E-mail;邮箱\n" +
+                        "excelsplit.fex=传真\n" +
+                        "excelsplit.ext=生日;职务");
                 fileWriter.flush();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -46,7 +46,7 @@ public class TemplateServiceImpl {
             try {
                 file.createNewFile();
                 FileOutputStream outputStream = new FileOutputStream(file);
-                outputStream.write(("excel:\n" +
+                outputStream.write(("excelsplit:\n" +
                         "  dept: ;部门\n" +
                         "  name: 姓名\n" +
                         "  phoneNumber: 分机号;固话;内线\n" +

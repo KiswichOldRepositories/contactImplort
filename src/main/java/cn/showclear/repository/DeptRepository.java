@@ -11,14 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DeptRepository extends CrudRepository<OrgDeptEntity,Integer> ,JpaSpecificationExecutor{
-
-
-
     @Modifying
     @Query("update OrgDeptEntity d set d.deptName = :#{#dept.deptName}  where d.id= :#{#dept.id}")
     public int setByDept(@Param("dept") OrgDeptEntity orgDeptEntity);
-
-
-    @Modifying
-    public OrgDeptEntity save2Dept(OrgDeptEntity orgDeptEntity);
 }
