@@ -7,6 +7,8 @@ import cn.showclear.entity.common.excelsplit.SheetPlus;
 import cn.showclear.entity.common.excelsplit.TableBlock;
 import cn.showclear.exception.TableStandardException;
 import cn.showclear.init.InitBean;
+import cn.showclear.repository.DeptRepository;
+import cn.showclear.repository.MemberRepository;
 import cn.showclear.service.BlockService;
 import cn.showclear.service.CellService;
 import cn.showclear.service.DeptService;
@@ -42,6 +44,10 @@ public class ExcelServiceImpl implements ExcelService {
     CellService cellService;
     @Autowired
     DeptService deptService;
+    @Autowired
+    DeptRepository deptRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
     @Override
     public OrgDeptEntity getExcel(String excelPath) throws IOException, InvalidFormatException, TableStandardException {
@@ -123,9 +129,8 @@ public class ExcelServiceImpl implements ExcelService {
                             default:
                                 break;
                         }
-
-
                     }
+
                     try {
                         if (!memExt.isEmpty())
                             orgMemberEntity.setDeptExt(new ObjectMapper().writeValueAsString(memExt));

@@ -116,8 +116,10 @@ public class ExcelApplication implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         //这里开始写主要的逻辑
+        System.out.println("正在解析excel表格");
         OrgDeptEntity excel = excelService.getExcel(initBean.getExcelConfig().getFileLocation());
-        int a = 0;
+        System.out.println("正在保存到数据库 ");
+        excelService.saveExcel(excel);
     }
 }
 
