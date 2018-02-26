@@ -8,15 +8,14 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "T_ORG_DEPT", schema = "DB_SC_CORE", catalog = "")
 @DynamicInsert
 @DynamicUpdate
-public class OrgDeptEntity {
+public class OrgDeptEntity implements Serializable,Cloneable {
     private int id;
 //    private int parentId;
     private String deptName;
@@ -31,16 +30,23 @@ public class OrgDeptEntity {
     private Date modifyTime;
     private Date createTime;
 
-    private Set<OrgDeptEntity> childDept;
+    private List<OrgDeptEntity> childDept;
     private OrgDeptEntity parentDept;
 
-    private Set<OrgMemberEntity> childMember;
+    private List<OrgMemberEntity> childMember;
 
     public OrgDeptEntity() {
+        this.childDept = new ArrayList<>();
+        this.childMember = new ArrayList<>();
+    }
+
+    public OrgDeptEntity(String deptName) {
+        this();
+        setDeptName(deptName);
     }
 
     public OrgDeptEntity(String deptName, int sortIndex, String pathName) {
-        this.deptName = deptName;
+        this(deptName);
         this.sortIndex = sortIndex;
         this.pathName = pathName;
     }
@@ -181,11 +187,11 @@ public class OrgDeptEntity {
     }
 
     @OneToMany(mappedBy = "parentDept",fetch = FetchType.EAGER)
-    public Set<OrgDeptEntity> getChildDept() {
+    public List<OrgDeptEntity> getChildDept() {
         return childDept;
     }
 
-    public void setChildDept(Set<OrgDeptEntity> childDept) {
+    public void setChildDept(List<OrgDeptEntity> childDept) {
         this.childDept = childDept;
     }
 
@@ -203,11 +209,11 @@ public class OrgDeptEntity {
     }
 
     @OneToMany(mappedBy = "parentDept",fetch = FetchType.EAGER)
-    public Set<OrgMemberEntity> getChildMember() {
+    public List<OrgMemberEntity> getChildMember() {
         return childMember;
     }
 
-    public void setChildMember(Set<OrgMemberEntity> childMember) {
+    public void setChildMember(List<OrgMemberEntity> childMember) {
         this.childMember = childMember;
     }
 
@@ -232,4 +238,9 @@ public class OrgDeptEntity {
     }
 
 
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

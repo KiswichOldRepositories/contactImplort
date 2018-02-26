@@ -8,6 +8,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.annotation.Order;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,23 +23,20 @@ public class Config {
 
     @Autowired Constant constant;
 
-    private ExcelConfig excelConfig;
-    public void setExcelConfig(ExcelConfig excelConfig) {
-        this.excelConfig = InitBean.getInstance().getExcelConfig();
-    }
-
     /**
      * 获取主部门
      * @return 单实例
      */
     @Bean
+    @Order(99)
     public OrgDeptEntity getMainDept(){
         return new OrgDeptEntity(constant.getMainDept(),1,constant.getMainDept());
     }
 
     @Bean
+    @Order(100)
     public Workbook getExcel() throws IOException, InvalidFormatException {
-        InputStream inputStream = new FileInputStream(excelConfig.getFileLocation());
+        InputStream inputStream = new FileInputStream(InitBean.getInstance().getExcelConfig().getFileLocation());
         return  WorkbookFactory.create(inputStream);
     }
 

@@ -15,6 +15,9 @@ public class TableBlock {
     //该表快的部门最高等级
     private Integer deptlevel;
 
+    //表块头所在行
+    private Integer headRow;
+
     //Integer : 在excel中的列数 ；TableEnum : 列代表的含义
     private Map<Integer,TableEnum> tableEnumMap;
 
@@ -53,5 +56,13 @@ public class TableBlock {
 
     public void setTableEnumMap(Map<Integer, TableEnum> tableEnumMap) {
         this.tableEnumMap = tableEnumMap;
+    }
+
+    public Integer getHeadRow() {
+        return headRow;
+    }
+
+    public void setHeadRow(Integer headRow) {
+        this.headRow = headRow;
     }
 }

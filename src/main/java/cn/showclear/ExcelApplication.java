@@ -10,6 +10,7 @@ import cn.showclear.repository.MemberRepository;
 
 
 import cn.showclear.repository.specification.SpecificationMethod;
+import cn.showclear.service.ExcelService;
 import cn.showclear.service.impl.HelpServiceImpl;
 import cn.showclear.service.ReadConfig;
 import cn.showclear.service.impl.TemplateServiceImpl;
@@ -102,6 +103,8 @@ public class ExcelApplication implements CommandLineRunner {
 
     @Autowired
     SpecificationMethod specificationMethod;
+    @Autowired
+    ExcelService excelService;
 
     /**
      * Callback used to run the bean.
@@ -113,34 +116,8 @@ public class ExcelApplication implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         //这里开始写主要的逻辑
-        System.out.println("spring环境配置完毕");
-        initBean.setOptionEnum(OptionEnum.transform);
-        System.out.println(initBean);
-        System.out.println(InitBean.getInstance());
-        System.out.println(configProperties.toString());
-        Date date = new Date();
-
-//        OrgDeptEntity next = one.getChildDept().iterator().next();
-//        next.setDeptName("叙简");
-//        deptRepository.save(one);
-//
-//        OrgDeptEntity orgDeptEntity = new OrgDeptEntity();
-//        orgDeptEntity.setDeptName("测试");
-//        orgDeptEntity.setId(1535);
-//        deptRepository.setByDept(orgDeptEntity);
-//
-//        System.out.println(Arrays.toString(one.getChildDept().toArray()));
-
-        List all = deptRepository.findAll(specificationMethod.searchCustom("叙简"));
-        System.out.println(initBean.getFile().getAbsolutePath());
-
-        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
-        OrgDeptEntity one = deptRepository.findOne(1534);
-        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
-
-        List all3 = deptRepository.findAll(specificationMethod.searchCustom("叙简"));
-        System.out.println("花了 " + (new Date().getTime()-date.getTime()) );
-
+        OrgDeptEntity excel = excelService.getExcel(initBean.getExcelConfig().getFileLocation());
+        int a = 0;
     }
 }
 

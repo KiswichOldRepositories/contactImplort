@@ -1,6 +1,7 @@
 package cn.showclear.service;
 
 import cn.showclear.entity.base.OrgDeptEntity;
+import cn.showclear.exception.TableStandardException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public interface ExcelService {
      * @param excelPath
      * @return
      */
-    public OrgDeptEntity getExcel(String excelPath) throws IOException, InvalidFormatException;
+    public OrgDeptEntity getExcel(String excelPath) throws IOException, InvalidFormatException, TableStandardException;
 
     /**
      *

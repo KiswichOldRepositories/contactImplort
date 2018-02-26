@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 储存配置在application.properties中的配置项
  */
-@ConfigurationProperties(prefix = "excelsplit")
+@ConfigurationProperties(prefix = "excel")
 @Component
 public class ExcelHeadConfig {
     private List<String> dept;

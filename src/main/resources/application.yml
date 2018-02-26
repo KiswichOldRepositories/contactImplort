@@ -18,6 +18,9 @@ excel:
   email: E-mail;邮箱
   fex: 传真
   ext: 生日;职务
+
+
+
 banner:
   charset: utf-8
 server:

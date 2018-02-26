@@ -3,6 +3,7 @@ package cn.showclear.init;
 
 import cn.showclear.entity.common.ExcelConfig;
 import cn.showclear.entity.common.OptionEnum;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.io.File;
  *
  */
 @Component
+@Order(5)
 public class InitBean {
     //单实例操作
     private static InitBean initBean = new InitBean(0);

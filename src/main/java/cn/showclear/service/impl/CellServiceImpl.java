@@ -18,6 +18,8 @@ public class CellServiceImpl implements CellService {
 
     @Override
     public TableEnum changeCell(Cell cell) {
+        if (cell == null) return null;
+
         String text = getText(cell);
         TableEnum tableEnum = null;
         if (excelHeadConfig.getDept().contains(text)) tableEnum = TableEnum.Dept;
@@ -37,9 +39,7 @@ public class CellServiceImpl implements CellService {
 
         String text = null;
         switch (cell.getCellTypeEnum()) {
-            case STRING:
-                text = cell.getStringCellValue().trim();
-                break;
+
             case NUMERIC:
                 //如果这是时间格式的数字单元格
                 if (HSSFDateUtil.isCellDateFormatted(cell)) {
@@ -51,6 +51,9 @@ public class CellServiceImpl implements CellService {
                 }
                 break;
             case BLANK:
+            case STRING:
+            default:
+                text = cell.getStringCellValue().trim();
                 break;
         }
         return text;

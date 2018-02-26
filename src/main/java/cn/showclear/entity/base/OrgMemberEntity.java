@@ -1,11 +1,15 @@
 package cn.showclear.entity.base;
 
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,7 +17,7 @@ import java.util.Objects;
 @Table(name = "T_ORG_MEMBER", schema = "DB_SC_CORE", catalog = "")
 @DynamicInsert
 @DynamicUpdate
-public class OrgMemberEntity {
+public class OrgMemberEntity implements Serializable,Cloneable{
     private int id;
 //    private int deptId;
     private String memCode;
@@ -80,6 +84,11 @@ public class OrgMemberEntity {
 
     public void setMemName(String memName) {
         this.memName = memName;
+        try {
+            this.firstLetter = PinyinHelper.getShortPinyin(memName);
+        } catch (PinyinException e) {
+            e.printStackTrace();
+        }
     }
 
     @Basic
@@ -337,4 +346,17 @@ public class OrgMemberEntity {
                 Objects.equals(createTime, that.createTime);
     }
 
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public void addPhoneNum(String number){
+        if(StringUtils.isBlank(this.memTel)) this.memTel = number;
+        else if(StringUtils.isBlank(this.memTel2)) this.memTel2 = number;
+        else if(StringUtils.isBlank(this.memTel3)) this.memTel3 = number;
+        else if(StringUtils.isBlank(this.memTel4)) this.memTel4 = number;
+        else if(StringUtils.isBlank(this.memTel5)) this.memTel5 = number;
+    }
 }

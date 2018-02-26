@@ -9,6 +9,7 @@ import java.util.List;
 public class SheetPlus {
     private List<TableBlock> tableBlocks;
     private Integer rowCount;
+    private Integer sheetIndex;
 
     public SheetPlus() {
         tableBlocks = new ArrayList<>();
@@ -28,5 +29,13 @@ public class SheetPlus {
 
     public void setRowCount(Integer rowCount) {
         this.rowCount = rowCount;
+    }
+
+    public Integer getSheetIndex() {
+        return sheetIndex;
+    }
+
+    public void setSheetIndex(Integer sheetIndex) {
+        this.sheetIndex = sheetIndex;
     }
 }
