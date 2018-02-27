@@ -1,5 +1,6 @@
 package cn.showclear.entity.base;
 
+import cn.showclear.repository.MemberRepository;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,9 +20,9 @@ import java.util.Objects;
 @Table(name = "T_ORG_MEMBER", schema = "DB_SC_CORE", catalog = "")
 @DynamicInsert
 @DynamicUpdate
-public class OrgMemberEntity implements Serializable,Cloneable{
+public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Integer> {
     private int id;
-//    private int deptId;
+    //    private int deptId;
     private String memCode;
     private String memName;
     private byte sex;
@@ -48,8 +51,19 @@ public class OrgMemberEntity implements Serializable,Cloneable{
 
     @Id
     @Column(name = "id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer getId() {
         return id;
+    }
+
+    /**
+     * Returns if the {@code Persistable} is new or was persisted already.
+     *
+     * @return if the object is new
+     */
+    @Override
+    public boolean isNew() {
+        return this.memEmail == null;
     }
 
     public void setId(int id) {
@@ -302,9 +316,9 @@ public class OrgMemberEntity implements Serializable,Cloneable{
     }
 
     @ManyToOne
-    @JoinColumn(name="dept_id")
-    @NotFound(action= NotFoundAction.IGNORE)
-    @org.hibernate.annotations.ForeignKey(name="none")
+    @JoinColumn(name = "dept_id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @org.hibernate.annotations.ForeignKey(name = "none")
     public OrgDeptEntity getParentDept() {
         return parentDept;
     }
@@ -352,11 +366,11 @@ public class OrgMemberEntity implements Serializable,Cloneable{
         return super.clone();
     }
 
-    public void addPhoneNum(String number){
-        if(StringUtils.isBlank(this.memTel)) this.memTel = number;
-        else if(StringUtils.isBlank(this.memTel2)) this.memTel2 = number;
-        else if(StringUtils.isBlank(this.memTel3)) this.memTel3 = number;
-        else if(StringUtils.isBlank(this.memTel4)) this.memTel4 = number;
-        else if(StringUtils.isBlank(this.memTel5)) this.memTel5 = number;
+    public void addPhoneNum(String number) {
+        if (StringUtils.isBlank(this.memTel)) this.memTel = number;
+        else if (StringUtils.isBlank(this.memTel2)) this.memTel2 = number;
+        else if (StringUtils.isBlank(this.memTel3)) this.memTel3 = number;
+        else if (StringUtils.isBlank(this.memTel4)) this.memTel4 = number;
+        else if (StringUtils.isBlank(this.memTel5)) this.memTel5 = number;
     }
 }

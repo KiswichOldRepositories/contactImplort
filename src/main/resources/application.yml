@@ -1,6 +1,7 @@
 spring:
   jpa:
     show-sql: true
+
   http:
     encoding:
       charset: UTF-8
@@ -8,6 +9,10 @@ spring:
       force: true
   messages:
     encoding: UTF-8
+  datasource:
+    username: showclear
+    password: showclear
+    url: jdbc:mysql://localhost/DB_SC_CORE?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull
 
 
 excel:
@@ -34,4 +39,6 @@ logging:
 #    常量记录
 constant:
   mainDept: 叙简科技
+
+# 默认数据库
 

@@ -2,6 +2,7 @@ package cn.showclear;
 
 
 import cn.showclear.entity.base.OrgDeptEntity;
+import cn.showclear.entity.common.ExcelConfig;
 import cn.showclear.entity.common.OptionEnum;
 import cn.showclear.exception.ArgsMissException;
 import cn.showclear.init.*;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 @SpringBootApplication
 @Configuration
-@PropertySource("file:comment.properties")
+@PropertySource(value = "file:comment.properties", ignoreResourceNotFound = true)
 @EnableJpaRepositories("cn.showclear.repository")
 
 public class ExcelApplication implements CommandLineRunner {
@@ -117,9 +118,13 @@ public class ExcelApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //这里开始写主要的逻辑
         System.out.println("正在解析excel表格");
-        OrgDeptEntity excel = excelService.getExcel(initBean.getExcelConfig().getFileLocation());
-        System.out.println("正在保存到数据库 ");
-        excelService.saveExcel(excel);
+        ExcelConfig config = initBean.getExcelConfig();
+        //区分测试类
+        if (excelService != null && config !=null) {
+            OrgDeptEntity excel = excelService.getExcel(config.getFileLocation());
+            System.out.println("正在保存到数据库 ");
+            excelService.saveExcel(excel);
+        }
     }
 }
 

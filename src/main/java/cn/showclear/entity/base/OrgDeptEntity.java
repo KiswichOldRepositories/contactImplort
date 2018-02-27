@@ -53,6 +53,7 @@ public class OrgDeptEntity implements Serializable,Cloneable {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -186,7 +187,7 @@ public class OrgDeptEntity implements Serializable,Cloneable {
         this.createTime = createTime;
     }
 
-    @OneToMany(mappedBy = "parentDept",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parentDept",fetch = FetchType.LAZY)
     public List<OrgDeptEntity> getChildDept() {
         return childDept;
     }
@@ -208,7 +209,7 @@ public class OrgDeptEntity implements Serializable,Cloneable {
         this.parentDept = parentDept;
     }
 
-    @OneToMany(mappedBy = "parentDept",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parentDept",fetch = FetchType.LAZY)
     public List<OrgMemberEntity> getChildMember() {
         return childMember;
     }
