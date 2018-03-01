@@ -6,28 +6,39 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Auditable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "T_ORG_DEPT", schema = "DB_SC_CORE", catalog = "")
 @DynamicInsert
 @DynamicUpdate
-public class OrgDeptEntity implements Serializable,Cloneable {
-    private int id;
-//    private int parentId;
+public class OrgDeptEntity implements Serializable, Cloneable {
+    private Integer id;
+    //    private int parentId;
     private String deptName;
     private String firstLetter;
     private String orgCode;
-    private int sortIndex;
+    private Integer sortIndex;
     private String pathName;
     private String syncKey;
     private String deptDesc;
     private String deptExt;
-    private byte isActive;
+    private Integer isActive;
+
+    @LastModifiedDate
     private Date modifyTime;
+    @CreatedDate
     private Date createTime;
 
     private List<OrgDeptEntity> childDept;
@@ -53,12 +64,12 @@ public class OrgDeptEntity implements Serializable,Cloneable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public int getId() {
+    @GeneratedValue()
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -81,7 +92,7 @@ public class OrgDeptEntity implements Serializable,Cloneable {
     public void setDeptName(String deptName) {
         this.deptName = deptName;
         try {
-            this.firstLetter = PinyinHelper.getShortPinyin(deptName);
+            if (deptName != null) this.firstLetter = PinyinHelper.getShortPinyin(deptName);
         } catch (PinyinException e) {
             e.printStackTrace();
         }
@@ -109,11 +120,11 @@ public class OrgDeptEntity implements Serializable,Cloneable {
 
     @Basic
     @Column(name = "sort_index")
-    public int getSortIndex() {
+    public Integer getSortIndex() {
         return sortIndex;
     }
 
-    public void setSortIndex(int sortIndex) {
+    public void setSortIndex(Integer sortIndex) {
         this.sortIndex = sortIndex;
     }
 
@@ -159,11 +170,11 @@ public class OrgDeptEntity implements Serializable,Cloneable {
 
     @Basic
     @Column(name = "is_active")
-    public byte getIsActive() {
+    public Integer getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(byte isActive) {
+    public void setIsActive(Integer isActive) {
         this.isActive = isActive;
     }
 
@@ -187,7 +198,7 @@ public class OrgDeptEntity implements Serializable,Cloneable {
         this.createTime = createTime;
     }
 
-    @OneToMany(mappedBy = "parentDept",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parentDept", fetch = FetchType.LAZY)
     public List<OrgDeptEntity> getChildDept() {
         return childDept;
     }
@@ -198,8 +209,8 @@ public class OrgDeptEntity implements Serializable,Cloneable {
 
     @ManyToOne()
     @JoinColumn(name = "parent_id")
-    @NotFound(action= NotFoundAction.IGNORE)
-    @org.hibernate.annotations.ForeignKey(name="none")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @org.hibernate.annotations.ForeignKey(name = "none")
     public OrgDeptEntity getParentDept() {
         return parentDept;
     }
@@ -209,7 +220,7 @@ public class OrgDeptEntity implements Serializable,Cloneable {
         this.parentDept = parentDept;
     }
 
-    @OneToMany(mappedBy = "parentDept",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parentDept", fetch = FetchType.LAZY)
     public List<OrgMemberEntity> getChildMember() {
         return childMember;
     }
@@ -239,9 +250,13 @@ public class OrgDeptEntity implements Serializable,Cloneable {
     }
 
 
-
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return pathName;
     }
 }

@@ -55,6 +55,7 @@ public class TemplateServiceImpl {
                         "  fex: 传真\n" +
                         "  ext: 生日;职务").getBytes("utf-8"));
                 outputStream.flush();
+                System.out.println("配置文件已创建于脚本同目录，名为application.yml");
             } catch (IOException e) {
                 e.printStackTrace();
             }

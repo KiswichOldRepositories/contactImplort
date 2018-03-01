@@ -7,8 +7,8 @@ import cn.showclear.entity.common.excelsplit.SheetPlus;
 import cn.showclear.entity.common.excelsplit.TableBlock;
 import cn.showclear.exception.TableStandardException;
 import cn.showclear.init.InitBean;
-import cn.showclear.repository.DeptRepository;
-import cn.showclear.repository.MemberRepository;
+import cn.showclear.repository.jpa.DeptRepository;
+import cn.showclear.repository.jpa.MemberRepository;
 import cn.showclear.service.BlockService;
 import cn.showclear.service.CellService;
 import cn.showclear.service.DeptService;
@@ -22,12 +22,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -63,7 +61,7 @@ public class ExcelServiceImpl implements ExcelService {
 
             OrgDeptEntity subDept = new OrgDeptEntity(sheet.getSheetName());
 
-            deptService.addDept(levelDepts,subDept,1);
+            deptService.addDept(levelDepts, subDept, 1);
 
             for (TableBlock tableBlock : sheetPlus.getTableBlocks()) {
 
@@ -72,13 +70,13 @@ public class ExcelServiceImpl implements ExcelService {
                 OrgDeptEntity orgDeptEntity = null;
 
 
-                while (sheet.getRow(columnIndex)!=null && sheet.getRow(columnIndex).getCell(0) != null) {
+                while (sheet.getRow(columnIndex) != null  && StringUtils.isNoneBlank(cellService.getText(sheet.getRow(columnIndex).getCell(tableBlock.getNameCell()))) ) {
                     //记录父子关系
 
                     OrgMemberEntity orgMemberEntity = new OrgMemberEntity();
                     Map<String, String> memExt = new HashMap<>();
 
-                    for (int cellIndex = tableBlock.getStartRow(); cellIndex < tableBlock.getEndRow() ; cellIndex++) {
+                    for (int cellIndex = tableBlock.getStartRow(); cellIndex < tableBlock.getEndRow()+1; cellIndex++) {
 
                         Cell cell = sheet.getRow(columnIndex).getCell(cellIndex);
                         String text = cellService.getText(cell);
@@ -90,7 +88,7 @@ public class ExcelServiceImpl implements ExcelService {
 
                                     Integer deptlevel = cellIndex - tableBlock.getStartRow() + 2; //based 2
                                     orgDeptEntity = new OrgDeptEntity(text);
-                                    deptService.addDept(levelDepts, orgDeptEntity,deptlevel);
+                                    deptService.addDept(levelDepts, orgDeptEntity, deptlevel);
                                 }
                                 break;
                             case orgCode:
@@ -100,7 +98,8 @@ public class ExcelServiceImpl implements ExcelService {
                                 orgMemberEntity.setMemName(text);
                                 break;
                             case phoneNumber:
-                                orgMemberEntity.addPhoneNum(text);
+                                String[] split = text.split("/");
+                                Arrays.stream(split).forEach(orgMemberEntity::addPhoneNum);
                                 break;
                             case tellphoneNumber:
                                 orgMemberEntity.setMemMobile(text);
@@ -109,7 +108,7 @@ public class ExcelServiceImpl implements ExcelService {
                                 orgMemberEntity.setMemFax(text);
                                 break;
                             case type:
-                                orgMemberEntity.setMemType((byte) Integer.parseInt(text));
+                                orgMemberEntity.setMemType(Integer.parseInt(text));
                                 break;
                             case memCode:
                                 orgMemberEntity.setMemCode(text);
@@ -121,7 +120,7 @@ public class ExcelServiceImpl implements ExcelService {
                                 );
                                 break;
                             case sex:
-                                orgMemberEntity.setSex((byte) Integer.parseInt(text));
+                                orgMemberEntity.setSex(Integer.parseInt(text));
                                 break;
                             case email:
                                 orgMemberEntity.setMemEmail(text);
@@ -147,9 +146,65 @@ public class ExcelServiceImpl implements ExcelService {
         return mainDept;
     }
 
-
+    /**
+     * 将一个excel实体存到数据库里
+     * 广度优先遍历
+     *
+     * @param excel
+     */
     @Override
+    @Transactional
     public void saveExcel(OrgDeptEntity excel) {
+        OrgDeptEntity loop = excel;
+        Stack<OrgDeptEntity> stack = new Stack<>();
+        //第一层先入栈
+        stack.push(excel);
 
+        while (!stack.isEmpty()) {
+            OrgDeptEntity peek = stack.pop();
+
+            saveDeptAndMember(peek);
+            //子元素入栈
+            peek.getChildDept().forEach(stack::push);
+        }
+    }
+
+    /**
+     * 存储
+     * @param orgDeptEntity
+     */
+    public void saveDeptAndMember(OrgDeptEntity orgDeptEntity){
+        List<OrgDeptEntity> deptEntities = deptRepository.findByPathName(orgDeptEntity.getPathName());
+        if (!deptEntities.isEmpty()) {
+            deptService.copyDept(deptEntities.get(0),orgDeptEntity);
+        }
+        deptRepository.save(orgDeptEntity);
+
+        List<OrgMemberEntity> childMember = orgDeptEntity.getChildMember();
+
+        for (int i = 0; i < childMember.size(); i++) {
+            OrgMemberEntity orgMemberEntity = childMember.get(i);
+            List<OrgMemberEntity> member = memberRepository.findByMemEmail(orgMemberEntity.getMemEmail());
+
+            if (!member.isEmpty()) {
+                deptService.copyMember(member.get(0),orgMemberEntity);
+            }
+            memberRepository.save(orgMemberEntity);
+        }
+    }
+
+    /**
+     * @param excel
+     * @deprecated 递归爆栈了！！！
+     */
+    @Transactional
+    @Deprecated
+    public void saveExcelde(OrgDeptEntity excel) {
+        //理论上至多只会找到一个
+        saveDeptAndMember(excel);
+
+        for (OrgDeptEntity orgDeptEntity : excel.getChildDept()) {
+            saveExcel(orgDeptEntity);
+        }
     }
 }

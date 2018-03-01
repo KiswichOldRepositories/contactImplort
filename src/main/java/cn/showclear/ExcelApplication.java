@@ -3,17 +3,15 @@ package cn.showclear;
 
 import cn.showclear.entity.base.OrgDeptEntity;
 import cn.showclear.entity.common.ExcelConfig;
-import cn.showclear.entity.common.OptionEnum;
 import cn.showclear.exception.ArgsMissException;
-import cn.showclear.init.*;
-import cn.showclear.repository.DeptRepository;
-import cn.showclear.repository.MemberRepository;
-
-
-import cn.showclear.repository.specification.SpecificationMethod;
+import cn.showclear.init.ExcelHeadConfig;
+import cn.showclear.init.InitBean;
+import cn.showclear.repository.jpa.DeptRepository;
+import cn.showclear.repository.jpa.MemberRepository;
+import cn.showclear.repository.jpa.specification.SpecificationMethod;
 import cn.showclear.service.ExcelService;
-import cn.showclear.service.impl.HelpServiceImpl;
 import cn.showclear.service.ReadConfig;
+import cn.showclear.service.impl.HelpServiceImpl;
 import cn.showclear.service.impl.TemplateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,13 +20,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
+import javax.persistence.EntityManager;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -38,8 +35,9 @@ import java.util.List;
 @SpringBootApplication
 @Configuration
 @PropertySource(value = "file:comment.properties", ignoreResourceNotFound = true)
-@EnableJpaRepositories("cn.showclear.repository")
-
+@EnableJpaRepositories("cn.showclear.repository.jpa")
+@EnableTransactionManagement
+@EnableJpaAuditing()
 public class ExcelApplication implements CommandLineRunner {
 
 
@@ -106,6 +104,8 @@ public class ExcelApplication implements CommandLineRunner {
     SpecificationMethod specificationMethod;
     @Autowired
     ExcelService excelService;
+    @Autowired
+    EntityManager entityManager;
 
     /**
      * Callback used to run the bean.
@@ -114,7 +114,6 @@ public class ExcelApplication implements CommandLineRunner {
      * @throws Exception on error
      */
     @Override
-    @Transactional
     public void run(String... args) throws Exception {
         //这里开始写主要的逻辑
         System.out.println("正在解析excel表格");
@@ -125,7 +124,9 @@ public class ExcelApplication implements CommandLineRunner {
             System.out.println("正在保存到数据库 ");
             excelService.saveExcel(excel);
         }
+
     }
+
 }
 
 

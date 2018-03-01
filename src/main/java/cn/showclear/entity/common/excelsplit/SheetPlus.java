@@ -38,4 +38,11 @@ public class SheetPlus {
     public void setSheetIndex(Integer sheetIndex) {
         this.sheetIndex = sheetIndex;
     }
+
+    @Override
+    public String toString() {
+        return "SheetPlus{" +
+                "tableBlocks=" + tableBlocks +
+                '}';
+    }
 }

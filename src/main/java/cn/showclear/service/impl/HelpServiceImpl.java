@@ -1,6 +1,5 @@
 package cn.showclear.service.impl;
 
-import javax.print.DocFlavor;
 import java.io.IOException;
 import java.io.InputStream;
 

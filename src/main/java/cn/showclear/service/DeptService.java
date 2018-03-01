@@ -38,4 +38,20 @@ public interface DeptService {
      */
     public void addMember(OrgDeptEntity deptEntity, OrgMemberEntity orgMemberEntity);
 
+    /**
+     * 复制部门的信息，
+     * 用于findOne后，只保留查询的id，替换掉其他的所有信息
+     * @param sourceDept
+     * @param descDept
+     */
+    public void copyDept(OrgDeptEntity sourceDept,OrgDeptEntity descDept);
+
+    /**
+     * 复制人员的信息，
+     * 用于findOne后，只保留查询的id，替换掉其他的所有信息
+     * @param sourceMember
+     * @param descMember
+     */
+    public void copyMember(OrgMemberEntity sourceMember,OrgMemberEntity descMember);
+
 }

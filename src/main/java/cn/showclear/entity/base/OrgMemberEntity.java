@@ -1,6 +1,5 @@
 package cn.showclear.entity.base;
 
-import cn.showclear.repository.MemberRepository;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -8,8 +7,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Persistable;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,18 +17,19 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "T_ORG_MEMBER", schema = "DB_SC_CORE", catalog = "")
 @DynamicInsert
 @DynamicUpdate
-public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Integer> {
-    private int id;
+public class OrgMemberEntity implements Serializable, Cloneable {
+    private Integer id;
     //    private int deptId;
     private String memCode;
     private String memName;
-    private byte sex;
+    private Integer sex;
     private String firstLetter;
     private String memTel;
-    private byte memType;
+    private Integer memType;
     private String memMobile;
     private String memTel2;
     private String memTel3;
@@ -43,15 +44,18 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
     private Integer sortIndex;
     private long updateTime;
     private String deptExt;
-    private byte isActive;
+    private Integer isActive;
+
+    @LastModifiedDate
     private Date modifyTime;
+    @CreatedDate
     private Date createTime;
 
     private OrgDeptEntity parentDept;
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue()
     public Integer getId() {
         return id;
     }
@@ -61,12 +65,8 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
      *
      * @return if the object is new
      */
-    @Override
-    public boolean isNew() {
-        return this.memEmail == null;
-    }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -91,6 +91,7 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
     }
 
     @Basic
+
     @Column(name = "mem_name")
     public String getMemName() {
         return memName;
@@ -99,7 +100,7 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
     public void setMemName(String memName) {
         this.memName = memName;
         try {
-            this.firstLetter = PinyinHelper.getShortPinyin(memName);
+            if (memName != null) this.firstLetter = PinyinHelper.getShortPinyin(memName);
         } catch (PinyinException e) {
             e.printStackTrace();
         }
@@ -107,11 +108,11 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
 
     @Basic
     @Column(name = "sex")
-    public byte getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(byte sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -137,11 +138,11 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
 
     @Basic
     @Column(name = "mem_type")
-    public byte getMemType() {
+    public Integer getMemType() {
         return memType;
     }
 
-    public void setMemType(byte memType) {
+    public void setMemType(Integer memType) {
         this.memType = memType;
     }
 
@@ -287,11 +288,11 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
 
     @Basic
     @Column(name = "is_active")
-    public byte getIsActive() {
+    public Integer getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(byte isActive) {
+    public void setIsActive(Integer isActive) {
         this.isActive = isActive;
     }
 
@@ -315,7 +316,7 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
         this.createTime = createTime;
     }
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "dept_id")
     @NotFound(action = NotFoundAction.IGNORE)
     @org.hibernate.annotations.ForeignKey(name = "none")
@@ -372,5 +373,10 @@ public class OrgMemberEntity implements Serializable, Cloneable, Persistable<Int
         else if (StringUtils.isBlank(this.memTel3)) this.memTel3 = number;
         else if (StringUtils.isBlank(this.memTel4)) this.memTel4 = number;
         else if (StringUtils.isBlank(this.memTel5)) this.memTel5 = number;
+    }
+
+    @Override
+    public String toString() {
+        return  memName ;
     }
 }

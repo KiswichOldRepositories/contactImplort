@@ -17,6 +17,8 @@ public class TableBlock {
 
     //表块头所在行
     private Integer headRow;
+    //名字所在列
+    private Integer nameCell;
 
     //Integer : 在excel中的列数 ；TableEnum : 列代表的含义
     private Map<Integer,TableEnum> tableEnumMap;
@@ -64,5 +66,22 @@ public class TableBlock {
 
     public void setHeadRow(Integer headRow) {
         this.headRow = headRow;
+    }
+
+    public Integer getNameCell() {
+        return nameCell;
+    }
+
+    public void setNameCell(Integer nameCell) {
+        this.nameCell = nameCell;
+    }
+
+    @Override
+    public String toString() {
+        return "TableBlock{" +
+                "startRow=" + startRow +
+                ", endRow=" + endRow +
+                ", headRow=" + headRow +
+                '}';
     }
 }

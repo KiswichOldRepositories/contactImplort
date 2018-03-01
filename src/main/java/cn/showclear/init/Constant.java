@@ -1,11 +1,8 @@
 package cn.showclear.init;
 
-import cn.showclear.entity.common.ExcelConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
 
 
 /**

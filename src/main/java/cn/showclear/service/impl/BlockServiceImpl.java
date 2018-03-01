@@ -68,9 +68,12 @@ public class BlockServiceImpl implements BlockService {
                     tableBlock.setHeadRow(rowIndex);
 
                     sheetPlus.getTableBlocks().add(tableBlock);
-                } else if (tableEnum != TableEnum.Dept) newBlockFlag = true;
+                } else if (tableEnum != TableEnum.Dept) {
+                    newBlockFlag = true;
+                }
 
                 tableBlock.getTableEnumMap().put(cellIndex, tableEnum);
+                if (tableEnum == TableEnum.name) tableBlock.setNameCell(cellIndex);
             }
             tableBlock.setEndRow(cellIndex - 1);
 

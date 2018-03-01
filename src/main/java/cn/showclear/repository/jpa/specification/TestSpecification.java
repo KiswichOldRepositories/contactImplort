@@ -1,4 +1,4 @@
-package cn.showclear.repository.specification;
+package cn.showclear.repository.jpa.specification;
 
 import cn.showclear.entity.base.OrgDeptEntity;
 import org.springframework.data.jpa.domain.Specification;

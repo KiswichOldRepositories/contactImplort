@@ -1,9 +1,7 @@
-package cn.showclear.repository.specification;
+package cn.showclear.repository.jpa.specification;
 
 
 import cn.showclear.entity.base.OrgDeptEntity;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

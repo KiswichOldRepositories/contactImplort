@@ -1,9 +1,7 @@
-package cn.showclear.repository.entityinformation;
+package cn.showclear.repository.jpa.entityinformation;
 
-import cn.showclear.entity.base.OrgMemberEntity;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
-import org.springframework.data.repository.core.EntityInformation;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
